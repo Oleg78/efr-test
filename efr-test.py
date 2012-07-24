@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#  EFRtest.py
+#  eft-test.py
 #  
 #  Copyright 2012 Oleg <oleg@triangulum>
 #  

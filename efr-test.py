@@ -32,17 +32,17 @@ def get_exif_EFR(jpg_file):
 	if hasattr(image, '_getexif'):
 		exifdata = image._getexif()
 		try:
-			EFR = exifdata[0x920A][0] / 100.0
+			EFR = exifdata[0x920A][0] * 1.0 / exifdata[0x920A][1]
 		except:
 			EFR = -2 #Ошибка чтения тега
 	return EFR
 
-def scan_scr_dir(src_dir):
+def scan_src_dir(src_dir):
 	dir_list = [os.path.join(src_dir, d) for d in os.listdir(src_dir)
 					if os.path.isdir(os.path.join(src_dir, d))]
 					
 	for d in dir_list:
-		scan_scr_dir(d)
+		scan_src_dir(d)
 
 	file_list = [os.path.join(src_dir, f) for f in os.listdir(src_dir)
 					if os.path.isfile(os.path.join(src_dir, f))
@@ -52,7 +52,11 @@ def scan_scr_dir(src_dir):
 		print jpg_file+';'+str(get_exif_EFR(jpg_file))
 	
 def main():
-	scan_scr_dir('./')
+	try:
+		src_dir = sys.argv[1] #попытка прочитать параметр
+	except:
+		src_dir = './'
+	scan_src_dir(src_dir)
 
 if __name__ == "__main__":
 	main()

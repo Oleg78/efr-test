@@ -27,36 +27,36 @@ import os
 import Image
 
 def get_exif_EFR(jpg_file):
-	image = Image.open(jpg_file)
-	EFR = -1 #Значение по умолчанию, вернётся если exif-а нет
-	if hasattr(image, '_getexif'):
-		exifdata = image._getexif()
-		try:
-			EFR = exifdata[0x920A][0] * 1.0 / exifdata[0x920A][1]
-		except:
-			EFR = -2 #Ошибка чтения тега
-	return EFR
+    image = Image.open(jpg_file)
+    EFR = -1 #Значение по умолчанию, вернётся если exif-а нет
+    if hasattr(image, '_getexif'):
+        exifdata = image._getexif()
+        try:
+            EFR = exifdata[0x920A][0] * 1.0 / exifdata[0x920A][1]
+        except:
+            EFR = -2 #Ошибка чтения тега
+    return EFR
 
 def scan_src_dir(src_dir):
-	dir_list = [os.path.join(src_dir, d) for d in os.listdir(src_dir)
-					if os.path.isdir(os.path.join(src_dir, d))]
-					
-	for d in dir_list:
-		scan_src_dir(d)
+    dir_list = [os.path.join(src_dir, d) for d in os.listdir(src_dir)
+                    if os.path.isdir(os.path.join(src_dir, d))]
+                    
+    for d in dir_list:
+        scan_src_dir(d)
 
-	file_list = [os.path.join(src_dir, f) for f in os.listdir(src_dir)
-					if os.path.isfile(os.path.join(src_dir, f))
-					and os.path.splitext(f)[1].upper() == '.JPG']
-	
-	for jpg_file in file_list:
-		print jpg_file+';'+str(get_exif_EFR(jpg_file))
-	
+    file_list = [os.path.join(src_dir, f) for f in os.listdir(src_dir)
+                    if os.path.isfile(os.path.join(src_dir, f))
+                    and os.path.splitext(f)[1].upper() == '.JPG']
+    
+    for jpg_file in file_list:
+        print jpg_file+';'+str(get_exif_EFR(jpg_file))
+    
 def main():
-	try:
-		src_dir = sys.argv[1] #попытка прочитать параметр
-	except:
-		src_dir = './'
-	scan_src_dir(src_dir)
+    try:
+        src_dir = sys.argv[1] #попытка прочитать параметр
+    except:
+        src_dir = './'
+    scan_src_dir(src_dir)
 
 if __name__ == "__main__":
-	main()
+    main()
